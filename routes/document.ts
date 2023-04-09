@@ -70,6 +70,38 @@ router.post('/search', verifyToken, async (req, res) => {
 	}
 })
 
+router.post('/anular', verifyToken, async (req, res) => {
+	try {
+		const { docid, estado } = req.body
+		if (!docid) throw 'Falta campos'
+
+		const result = await documImp.anular_doc(docid, estado)
+		return res.json(result)
+	} catch (error) {
+		return res.status(400).json({
+			error: {
+				message: typeof error == 'string' ? error : (error as Error).message,
+			},
+		})
+	}
+})
+
+router.post('/eliminardetalle', verifyToken, async (req, res) => {
+	try {
+		const { docid } = req.body
+		if (!docid) throw 'Falta campos'
+
+		const result = await documImp.eliminar_doc(docid)
+		return res.json(result)
+	} catch (error) {
+		return res.status(400).json({
+			error: {
+				message: typeof error == 'string' ? error : (error as Error).message,
+			},
+		})
+	}
+})
+
 router.post('/searchByName', verifyToken, async (req, res) => {
 	try {
 		const { nombre } = req.body

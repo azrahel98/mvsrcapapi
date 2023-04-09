@@ -3,6 +3,15 @@ import { MysqlService } from '../db/mysql'
 import { AsistenciaRepo } from '../repository/repos'
 
 export class AsistenciaImpl implements AsistenciaRepo {
+	async eliminar_asistencia(fecha: string | Date, dni: string): Promise<void> {
+		try {
+			const [_result] = await (
+				await MysqlService.getInstance().MysqlCon
+			).query(`delete from Asistencia where dni = ? and fecha = ?`, [dni, fecha])
+		} catch (error) {
+			throw error
+		}
+	}
 	async buscar_asistencia(dni: string, mes: number, year: number): Promise<object> {
 		try {
 			const [result] = await (
@@ -121,9 +130,6 @@ export class AsistenciaImpl implements AsistenciaRepo {
 	}
 
 	editar_asistencia(): void {
-		throw new Error('Method not implemented.')
-	}
-	eliminar_asistencia(): void {
 		throw new Error('Method not implemented.')
 	}
 }

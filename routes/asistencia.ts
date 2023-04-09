@@ -31,6 +31,27 @@ router.post('/', verifyToken, async (req, res) => {
 	}
 })
 
+router.post('/eliminar', verifyToken, async (req, res) => {
+	try {
+		const { dni, fecha } = req.body
+
+		if (!dni || !fecha) throw 'parametros vacios'
+
+		if (dni.length !== 8) throw 'dni incorrecto'
+		if (isNaN(Date.parse(fecha))) throw 'formato incorrecto'
+
+		const data = await asisImp.eliminar_asistencia(fecha, dni)
+
+		res.json({ data })
+	} catch (error) {
+		return res.status(400).json({
+			error: {
+				message: typeof error == 'string' ? error : (error as Error).message,
+			},
+		})
+	}
+})
+
 router.post('/add', verifyToken, async (req, res) => {
 	try {
 		const { dni, fecha, falta, tardanza } = req.body

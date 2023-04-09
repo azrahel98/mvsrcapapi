@@ -9,6 +9,31 @@ import { DocumentosRecibidosRepo } from '../repository/repos'
 import moment from 'moment'
 
 export class DocumentosImpl implements DocumentosRecibidosRepo {
+	async eliminar_doc(docid: number): Promise<Boolean | Error> {
+		try {
+			const [result] = await (
+				await MysqlService.getInstance().MysqlCon
+			).execute(`delete from  DetalleDocumentos where idDetalle = ?`, [docid])
+			if (result.length == 0) throw 'sin campos'
+			return result
+		} catch (error) {
+			throw error
+		}
+	}
+	async anular_doc(docid: number, estado: boolean): Promise<Boolean | Error> {
+		try {
+			const [result] = await (
+				await MysqlService.getInstance().MysqlCon
+			).execute(`update DetalleDocumentos set activo = ? where idDetalle = ?`, [
+				estado ? 0 : 1,
+				docid,
+			])
+			if (result.length == 0) throw 'sin campos'
+			return result
+		} catch (error) {
+			throw error
+		}
+	}
 	async buscar_doc_dni(dni: string): Promise<Error | Object[]> {
 		try {
 			const [result] = await (

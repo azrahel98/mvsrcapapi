@@ -38,6 +38,9 @@ export interface DocumentosRecibidosRepo {
 		mes: number,
 		year: number
 	): Promise<DetalleDocumentos[] | Error>
+
+	anular_doc(docid: number, estado: boolean): Promise<Boolean | Error>
+	eliminar_doc(docid: number): Promise<Boolean | Error>
 }
 
 export interface AsistenciaRepo {
@@ -50,7 +53,7 @@ export interface AsistenciaRepo {
 	): Promise<object>
 	buscar_asistencia(dni: string, mes: number, year: number): Promise<object>
 	editar_asistencia(): void
-	eliminar_asistencia(): void
+	eliminar_asistencia(fecha: Date | string, dni: string): void
 }
 
 export interface InformacionAdicional {
